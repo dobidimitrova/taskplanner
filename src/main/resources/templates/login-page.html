@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner - Login</title>
+    <link rel="icon" type="image/x-icon" href="/templates/title-icon.png">
+    <style>
+        *, *:after, *:before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background-image: url('/beige-background-picture-image.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1em;
+            padding-bottom: 1em;
+            background-color: #E6CCB3;
+        }
+
+        img {
+            width: 3em;
+            height: 3em;
+            margin-left: 2em;
+        }
+
+        header {
+            text-align: center;
+            color: #80613F;
+        }
+
+        header h2 {
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+            font-size: 50px;
+        }
+
+        div {
+            margin: auto;
+            width: 90%;
+            max-width: 400px;
+            background-color: #E6CCB3;
+            padding: 2em;
+            border: 1px solid #583E22;
+            border-radius: 0.7em;
+        }
+
+        input {
+            margin-top: 1em;
+            margin-bottom: 2em;
+            padding: 0.5em;
+            width: calc(100% - 1em);
+            box-sizing: border-box;
+        }
+
+        label {
+            font-size: 25px;
+            display: block;
+        }
+
+        button {
+            padding: 0.5em 2em;
+            background-color: #B89A7E;
+            border: 1px solid #583E22;
+            font-size: 15px;
+            border-radius: 0.7em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button a {
+            text-decoration: none;
+            color: #583E22;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 0.5em;
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #B89A7E;
+            color: #583E22;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        @media (min-width: 600px) {
+            div {
+                width: 60%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            div {
+                width: 40%;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            div {
+                width: 30%;
+            }
+        }
+
+         @media (min-width: 1200px) {
+            div {
+                width: 20%;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="/cal.jpg" alt="">
+</nav>
+<header>
+    <h2>Login</h2>
+    <div>
+        <form id="loginForm" onsubmit="return validateForm()">
+            <label for="username">Username</label><br>
+            <input type="text" id="username" name="username"><br>
+            <p id="usernameError" class="error"></p><br>
+            <label for="password">Password</label><br>
+            <input type="password" id="password" name="password"><br>
+            <p id="passwordError" class="error"></p><br>
+            <button type="submit">Login</button>
+            <p id="loginError" class="error">
+                <span th:if="${notFound != null}" th:text="'Invalid username or password.'"></span>
+                <span th:if="${passwordError != null}" th:text="${passwordError}"></span>
+            </p>
+        </form>
+    </div>
+</header>
+<footer>&copy; All rights reserved 2024.</footer>
+
+<script>
+    function validateForm() {
+        let username = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
+        let usernameError = document.getElementById("usernameError");
+        let passwordError = document.getElementById("passwordError");
+        let loginError = document.getElementById("loginError");
+        let isValid = true;
+
+
+        usernameError.textContent = "";
+        passwordError.textContent = "";
+        loginError.textContent = "";
+
+
+        if (username.trim() === "") {
+            usernameError.textContent = "Username is required.";
+            isValid = false;
+        }
+
+        if (password.trim() === "") {
+            passwordError.textContent = "Password is required.";
+            isValid = false;
+        }
+
+        if (isValid) {
+            let formData = new FormData();
+            formData.append("username", username);
+            formData.append("password", password);
+
+            fetch('/user/login', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+                if (html.includes("Invalid username or password.")) {
+                    loginError.textContent = "Invalid username or password.";
+                } else {
+                    window.location.href = "/user/calendar-page";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loginError.textContent = "Login failed. Please try again later.";
+            });
+        }
+
+        return false;
+    }
+</script>
+
+</body>
+</html>

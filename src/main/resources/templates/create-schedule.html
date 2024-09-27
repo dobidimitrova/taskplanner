@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner</title>
+    <link rel="icon" type="image/x-icon" href="/templates/title-icon.png">
+    <style>
+        *,
+        *:after,
+        *:before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            background-image: url('/beige-background-picture-image.jpg');
+            background-size: cover;
+            background-repeat: repeat;
+            background-position: center;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em;
+            background-color: #E6CCB3;
+        }
+        img {
+            width: 2em;
+            height: 2em;
+            margin-left: 2em;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            justify-content: flex-end;
+        }
+        nav ul li {
+            margin-left: 1em;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #80613F;
+        }
+        header {
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #80613F;
+        }
+        .form {
+            text-align: center;
+            color: #80613F;
+            margin-top: 1em;
+        }
+        .form h2 {
+            margin-bottom: 0.2em;
+            font-size: 40px;
+        }
+        #taskForm {
+            margin: auto;
+            width: 90%;
+            max-width: 600px;
+            background-color: #E6CCB3;
+            padding: 2em;
+            border: 1px solid #583E22;
+            border-radius: 0.7em;
+        }
+        #taskForm input,
+        #taskForm select,
+        #taskForm textarea {
+            margin-top: 0.2em;
+            margin-bottom: 1em;
+            padding: 0.5em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #taskForm input[type="submit"] {
+            margin-top: 0.5em;
+            padding: 0.5em 2em;
+            background-color: #B89A7E;
+            border: 1px solid #583E22;
+            font-size: 15px;
+            border-radius: 0.7em;
+            cursor: pointer;
+        }
+        select {
+            width: 100%;
+        }
+        label {
+            font-size: 20px;
+        }
+        header h1 {
+            margin-bottom: 0.3em;
+            font-size: 80px;
+        }
+        header p {
+            font-size: 20px;
+        }
+        footer {
+            margin-top: 2em;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #B89A7E;
+            color: #583E22;
+            text-align: center;
+            padding: 1em 0;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        @media (max-width: 480px) {
+            img {
+                width: 1.5em;
+                height: 1.5em;
+                margin-left: 0.5em;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 0.5em 0;
+            }
+            header h1 {
+                font-size: 30px;
+            }
+            .form h2 {
+                font-size: 20px;
+            }
+            #taskForm {
+                width: 90%;
+                padding: 1em;
+            }
+            label {
+                font-size: 16px;
+            }
+            #taskForm input,
+            #taskForm select,
+            #taskForm textarea {
+                width: 100%;
+                padding: 0.5em;
+            }
+            #taskForm input[type="submit"] {
+                width: 100%;
+            }
+        }
+        @media (min-width: 481px) and (max-width: 767px) {
+            img {
+                width: 1.8em;
+                height: 1.8em;
+                margin-left: 0.8em;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 0.5em 0;
+            }
+            header h1 {
+                font-size: 40px;
+            }
+            .form h2 {
+                font-size: 25px;
+            }
+            #taskForm {
+                width: 80%;
+            }
+            label {
+                font-size: 18px;
+            }
+            #taskForm input,
+            #taskForm select,
+            #taskForm textarea {
+                width: 100%;
+                padding: 0.5em;
+            }
+            #taskForm input[type="submit"] {
+                width: 100%;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+            img {
+                width: 2em;
+                height: 2em;
+                margin-left: 1em;
+            }
+            nav ul {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+            nav ul li {
+                margin-left: 1em;
+            }
+            header h1 {
+                font-size: 50px;
+            }
+            .form h2 {
+                font-size: 30px;
+            }
+            #taskForm {
+                width: 70%;
+            }
+            label {
+                font-size: 18px;
+            }
+            #taskForm input,
+            #taskForm select,
+            #taskForm textarea {
+                width: 100%;
+                padding: 0.5em;
+            }
+            #taskForm input[type="submit"] {
+                width: 100%;
+            }
+        }
+        @media (min-width: 600px) and (max-width: 800px) {
+            header h1 {
+                font-size: 45px;
+            }
+            .form h2 {
+                font-size: 25px;
+            }
+            #taskForm {
+                width: 80%;
+            }
+            label {
+                font-size: 18px;
+            }
+        }
+        @media (min-width: 801px) and (max-width: 1024px) {
+            header h1 {
+                font-size: 50px;
+            }
+            .form h2 {
+                font-size: 30px;
+            }
+            #taskForm {
+                width: 60%;
+            }
+            label {
+                font-size: 18px;
+            }
+        }
+        @media (min-width: 1024px) and (max-width: 1280px) {
+            #taskForm {
+                width: 50%;
+            }
+            header h1 {
+                font-size: 60px;
+            }
+            .form h2 {
+                font-size: 35px;
+            }
+            label {
+                font-size: 20px;
+            }
+        }
+        @media (min-width: 1281px) and (max-width: 1600px) {
+            #taskForm {
+                width: 40%;
+            }
+            header h1 {
+                font-size: 70px;
+            }
+            .form h2 {
+                font-size: 40px;
+            }
+            label {
+                font-size: 22px;
+            }
+        }
+        @media (min-width: 1601px) {
+            #taskForm {
+                width: 30%;
+            }
+            header h1 {
+                font-size: 80px;
+            }
+            .form h2 {
+                font-size: 45px;
+            }
+            label {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="/cal.jpg" alt="">
+    <ul>
+        <li th:if="${session.user != null}"><a href="/user/calendar-page">Calendar</a></li>
+        <li th:if="${session.user != null}"><a href="/tasks/create-task">Create task</a></li>
+        <li th:if="${session.user != null and session.role == 'admin'}">
+            <a href="/user/all-users">Users</a>
+        </li>
+        <li th:if="${session.user != null}"><a href="/subscriptions">Subscription</a></li>
+        <li th:if="${session.user != null}"><a href="/tasks/task-page">My Tasks</a></li>
+        <li th:if="${session.user != null}"><a href="/schedules">My Schedules</a></li>
+        <li th:if="${session.user != null}"><a href="/user/logout">Logout</a></li>
+    </ul>
+</nav>
+<div class="form">
+    <h2>Create Schedule</h2>
+    <form id="taskForm" action="/create-schedule" method="post" onsubmit="return validateForm()">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <span id="nameError" class="error"></span><br>
+        <label for="startData">Start Date:</label><br>
+        <input type="datetime-local" id="startData" name="startData" required><br>
+        <span id="startDataError" class="error"></span><br>
+        <label for="place">Place:</label><br>
+        <input type="text" id="place" name="place" required><br>
+        <span id="placeError" class="error"></span><br>
+        <label for="visibility">Visibility:</label><br>
+        <select id="visibility" name="visibility" required onchange="toggleAssignee()">
+            <option value="" disabled selected>Select a type</option>
+            <option value="Public">Public</option>
+            <option value="Private">Private</option>
+        </select>
+        <span id="visibilityError" class="error"></span><br>
+        <div id="assigneeDiv" style="display:none;">
+            <label for="assignee">Assignee:</label><br>
+            <select id="assignee" name="assigneeId">
+                <option value="" disabled selected>Select a user</option>
+                <option th:each="user : ${allUsers}" th:value="${user.id}" th:text="${user.email}"></option>
+            </select>
+            <span id="assigneeError" class="error"></span><br>
+        </div>
+        <input type="submit" value="Submit">
+        <div id="errorMessages" style="color:red;"></div>
+    </form>
+</div>
+<footer>&copy; All rights reserved 2024.</footer>
+<script>
+    function validateForm() {
+        let name = document.getElementById("name").value.trim();
+        let startData = document.getElementById("startData").value.trim();
+        let place = document.getElementById("place").value.trim();
+        let visibility = document.getElementById("visibility").value;
+        let assignee = document.getElementById("assignee").value;
+        let isValid = true;
+        document.getElementById("nameError").textContent = "";
+        document.getElementById("startDataError").textContent = "";
+        document.getElementById("placeError").textContent = "";
+        document.getElementById("visibilityError").textContent = "";
+        document.getElementById("assigneeError").textContent = "";
+        if (name === "" || name.length < 3) {
+            document.getElementById("nameError").textContent = "Name is required and must be at least 3 characters long";
+            isValid = false;
+        }
+        if (startData === "") {
+            document.getElementById("startDataError").textContent = "Start Date is required";
+            isValid = false;
+        }
+        if (place === "" || place.length < 3) {
+            document.getElementById("placeError").textContent = "Place is required and must be at least 3 characters long";
+            isValid = false;
+        }
+        if (visibility === "") {
+            document.getElementById("visibilityError").textContent = "Visibility is required";
+            isValid = false;
+        }
+        if (visibility === "Private" && assignee === "") {
+            document.getElementById("assigneeError").textContent = "Assignee is required for Private visibility";
+            isValid = false;
+        }
+
+        return isValid;
+    }
+    function toggleAssignee() {
+        let visibility = document.getElementById("visibility").value;
+        let assigneeDiv = document.getElementById("assigneeDiv");
+
+        if (visibility === "Private") {
+            assigneeDiv.style.display = "block";
+        } else {
+            assigneeDiv.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner</title>
+    <link rel="icon" type="image/x-icon" href="/templates/title-icon.png">
+    <style>
+        *, *:after, *:before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background-image: url('/beige-background-picture-image.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1em;
+            padding-bottom: 1em;
+            background-color: #E6CCB3;
+        }
+
+        img {
+            width: 3em;
+            height: 3em;
+            margin-left: 2em;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            justify-content: flex-end;
+        }
+
+        nav ul li {
+            margin-right: 2em;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #80613F;
+        }
+
+        nav ul li:last-of-type {
+            margin-right: 2em;
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #B89A7E;
+            color: #583E22;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        .calendar-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .calendar-container .calendar {
+            display: inline-block;
+            width: 500px;
+            height: 500px;
+        }
+
+    </style>
+</head>
+<body>
+<nav>
+    <img src="/cal.jpg" alt="">
+    <ul>
+        <li th:if="${session.user != null}">
+            <a href="/tasks/create-task">Create task</a>
+        </li>
+        <li th:if="${session.user != null and session.role == 'admin'}">
+            <a href="/user/all-users">Users</a>
+        </li>
+
+        <li th:if="${session.user != null}">
+            <a href="/create-schedule">Create schedule</a>
+        </li>
+        <li th:if="${session.user != null}">
+            <a href="/subscriptions">Subscription</a>
+        </li>
+        <li th:if="${session.user != null}">
+            <a href="/tasks/task-page">My Tasks</a>
+        </li>
+        <li th:if="${session.user != null}">
+            <a href="/schedules">My Schedules</a>
+        </li>
+        <li th:if="${session.user != null}">
+            <a href="/user/logout">Logout</a>
+        </li>
+    </ul>
+</nav>
+<footer>&copy; All right reserved 2024.</footer>
+
+<div class="calendar-container">
+    <div id="calendar" class="calendar" th:fragment="calendar"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        let calendarEl = document.getElementById('calendar');
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            selectable: true,
+        });
+        calendar.render();
+    });
+</script>
+</body>
+</html>

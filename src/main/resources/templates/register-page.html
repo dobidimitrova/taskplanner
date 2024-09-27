@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner</title>
+    <link rel="icon" type="image/x-icon" href="/templates/title-icon.png">
+    <style>
+        *, *:after, *:before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            background-image: url('/beige-background-picture-image.jpg');
+            background-size: cover;
+            background-repeat: repeat;
+            background-position: center;
+            height: 100%;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1em;
+            padding-bottom: 1em;
+            background-color: #E6CCB3;
+        }
+        img {
+            width: 3em;
+            height: 3em;
+            margin-left: 2em;
+        }
+        header {
+            text-align: center;
+            color: #80613F;
+            padding: 1em;
+        }
+        header h2 {
+            margin-bottom: 0.2em;
+            font-size: 50px;
+        }
+        div {
+            margin: auto;
+            width: 80%;
+            background-color: #E6CCB3;
+            padding: 2em;
+            border: 1px solid #583E22;
+            border-radius: 0.7em;
+        }
+        @media (min-width: 600px) {
+            div {
+                width: 60%;
+            }
+        }
+        @media (min-width: 768px) {
+            div {
+                width: 40%;
+            }
+        }
+        @media (min-width: 1024px) {
+            div {
+                width: 30%;
+            }
+        }
+        @media (min-width: 1200px) {
+            div {
+                width: 20%;
+            }
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: calc(100% - 2em);
+            padding: 0.5em;
+            box-sizing: border-box;
+            margin-bottom: 0.8em;
+        }
+        label {
+            font-size: 25px;
+            margin-bottom: 0.1em;
+            margin-top: 0.3em;
+            display: block;
+        }
+        input {
+            width: 100%;
+            padding-left: 4em;
+            padding-right: 0.5em;
+        }
+        button {
+            padding: 0.5em 2em;
+            background-color: #B89A7E;
+            border: 1px solid #583E22;
+            font-size: 15px;
+            border-radius: 0.7em;
+            margin-top: 1em;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 1em;
+        }
+        footer {
+            margin-top: 2em;
+            position: relative;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #B89A7E;
+            color: #583E22;
+            text-align: center;
+            padding: 1em 0;
+        }
+        @media (max-width: 768px) {
+            footer {
+                padding: 0.5em 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="/cal.jpg" alt="Logo">
+</nav>
+<header>
+    <h2>Register</h2>
+    <div>
+        <form id="userRegisterModel" th:action="@{/user/register}" method="post" th:object="${userRegisterModel}">
+            <label for="username">Username</label><br>
+            <input type="text" id="username" name="username" th:field="*{username}">
+            <span id="usernameError" class="error" th:text="${usernameError}"></span><br>
+
+            <label for="email">Email</label><br>
+            <input type="email" id="email" name="email" th:field="*{email}">
+            <span id="emailError" class="error" th:text="${emailError}"></span><br>
+
+            <label for="phoneNumber">Phone number</label><br>
+            <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" placeholder="Enter phone number" maxlength="13" onfocus="addPrefix(this)">
+            <span id="phoneNumberError" class="error"></span><br>
+
+            <label for="notification">Notification by:</label><br>
+            <select id="notification" name="notification" th:field="*{notificationPreference}">
+                <option value="SMS">SMS</option>
+                <option value="EMAIL">EMAIL</option>
+                <option value="BOTH">Email and SMS</option>
+            </select>
+            <span id="notificationError" class="error"></span><br>
+
+            <label for="password">Password</label><br>
+            <input type="password" id="password" name="password" th:field="*{password}">
+            <span id="passwordError" class="error"></span><br>
+
+            <label for="confirmPassword">Confirm Password</label><br>
+            <input type="password" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}">
+            <span id="confirmPasswordError" class="error"></span><br>
+
+            <button type="submit" onclick="return validateForm()">Register</button>
+        </form>
+    </div>
+</header>
+<footer>&copy; All rights reserved 2024.</footer>
+<script>
+    function addPrefix(input) {
+        let value = input.value;
+        if (!value.startsWith("+359")) {
+            input.value = "+359" + value.replace(/^\+359/, '');
+        }
+    }
+
+    function validateForm() {
+        let username = document.getElementById("username").value;
+        let email = document.getElementById("email").value;
+        let phoneNumber = document.getElementById("phoneNumber").value;
+        let notification = document.getElementById("notification").value;
+        let password = document.getElementById("password").value;
+        let confirmPassword = document.getElementById("confirmPassword").value;
+        let errors = false;
+
+        document.getElementById("usernameError").textContent = "";
+        document.getElementById("emailError").textContent = "";
+        document.getElementById("phoneNumberError").textContent = "";
+        document.getElementById("notificationError").textContent = "";
+        document.getElementById("passwordError").textContent = "";
+        document.getElementById("confirmPasswordError").textContent = "";
+
+        if (username.trim() === "") {
+            document.getElementById("usernameError").textContent = "Username is required.";
+            errors = true;
+        } else if (!validateUsername(username)) {
+            document.getElementById("usernameError").textContent = "Username must be between 3 and 20 characters.";
+            errors = true;
+        }
+
+        if (email.trim() === "") {
+            document.getElementById("emailError").textContent = "Email is required.";
+            errors = true;
+        } else if (!validateEmail(email)) {
+            document.getElementById("emailError").textContent = "Invalid email format.";
+            errors = true;
+        }
+
+        if (phoneNumber.trim() === "") {
+            document.getElementById("phoneNumberError").textContent = "Phone number is required.";
+            errors = true;
+        } else if (!validatePhoneNumber(phoneNumber)) {
+            document.getElementById("phoneNumberError").textContent = "Phone number must be 13 characters with +359.";
+            errors = true;
+        }
+
+        if (notification.trim() === "") {
+            document.getElementById("notificationError").textContent = "Notification method is required.";
+            errors = true;
+        }
+
+        if (password.trim() === "") {
+            document.getElementById("passwordError").textContent = "Password is required.";
+            errors = true;
+        } else if (!validatePassword(password)) {
+            document.getElementById("passwordError").textContent = "Password must be between 3 and 10 characters.";
+            errors = true;
+        }
+
+        if (confirmPassword.trim() === "") {
+            document.getElementById("confirmPasswordError").textContent = "Please confirm your password.";
+            errors = true;
+        } else if (confirmPassword !== password) {
+            document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+            errors = true;
+        }
+
+        return !errors;
+    }
+
+    function validateUsername(username) {
+        return username.length >= 3 && username.length <= 20;
+    }
+
+    function validateEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+    }
+
+    function validatePhoneNumber(phoneNumber) {
+        return phoneNumber.startsWith("+359") && phoneNumber.length === 13;
+    }
+
+    function validatePassword(password) {
+        return password.length >= 3 && password.length <= 10;
+    }
+</script>
+</body>
+</html>

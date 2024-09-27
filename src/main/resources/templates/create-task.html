@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner</title>
+    <link rel="icon" type="image/x-icon" href="/templates/title-icon.png">
+    <style>
+        *,
+        *:after,
+        *:before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            background-image: url('/beige-background-picture-image.jpg');
+            background-size: cover;
+            background-repeat: repeat;
+            background-position: center;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em;
+            background-color: #E6CCB3;
+        }
+        img {
+            width: 2em;
+            height: 2em;
+            margin-left: 1em;
+        }
+        header {
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #80613F;
+        }
+        .form {
+            text-align: center;
+            color: #80613F;
+            margin: 2em auto;
+            padding: 1em;
+            max-width: 90%;
+        }
+        .form h2 {
+            margin-bottom: 0.2em;
+            font-size: 2.5em;
+        }
+        #taskForm {
+            background-color: #E6CCB3;
+            padding: 2em;
+            border: 1px solid #583E22;
+            border-radius: 0.7em;
+            margin: auto;
+            width: 100%;
+            max-width: 600px;
+        }
+        #taskForm input,
+        #taskForm select,
+        #taskForm textarea {
+            margin-top: 0.2em;
+            margin-bottom: 1em;
+            padding: 0.5em;
+            width: calc(100% - 1em);
+            box-sizing: border-box;
+        }
+        #taskForm input[type="submit"] {
+            margin-top: 0.5em;
+            padding: 0.5em 2em;
+            background-color: #B89A7E;
+            border: 1px solid #583E22;
+            font-size: 15px;
+            border-radius: 0.7em;
+            cursor: pointer;
+        }
+        label {
+            font-size: 1.2em;
+            display: block;
+            margin-bottom: 0.5em;
+        }
+        header h1 {
+            font-size: 4em;
+        }
+        header p {
+            font-size: 1.25em;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+        }
+        nav ul li {
+            margin-left: 1em;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #80613F;
+        }
+        footer {
+            position: relative;
+            width: 100%;
+            background-color: #B89A7E;
+            color: #583E22;
+            text-align: center;
+            padding: 1em 0;
+            margin-top: 2em;
+        }
+        .error {
+            color: red;
+            font-size: 0.875em;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        @media (max-width: 480px) {
+            img {
+                width: 1.5em;
+                height: 1.5em;
+                margin-left: 0.5em;
+            }
+            header h1 {
+                font-size: 2em;
+            }
+            .form h2 {
+                font-size: 1.5em;
+            }
+            #taskForm {
+                width: 90%;
+                padding: 1em;
+            }
+            label {
+                font-size: 1em;
+            }
+            #taskForm input,
+            #taskForm select,
+            #taskForm textarea {
+                width: 100%;
+                padding: 0.5em;
+            }
+            #taskForm input[type="submit"] {
+                width: 100%;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                margin: 0;
+                padding: 0;
+            }
+            nav ul li {
+                margin: 0.5em 0;
+            }
+        }
+        @media (min-width: 481px) and (max-width: 767px) {
+            img {
+                width: 1.8em;
+                height: 1.8em;
+                margin-left: 0.8em;
+            }
+            header h1 {
+                font-size: 2.5em;
+            }
+            .form h2 {
+                font-size: 1.8em;
+            }
+            #taskForm {
+                width: 80%;
+            }
+            label {
+                font-size: 1.1em;
+            }
+            #taskForm input,
+            #taskForm select,
+            #taskForm textarea {
+                width: 100%;
+                padding: 0.5em;
+            }
+            #taskForm input[type="submit"] {
+                width: 100%;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 0.5em 0;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+            img {
+                width: 2em;
+                height: 2em;
+                margin-left: 1em;
+            }
+            header h1 {
+                font-size: 3em;
+            }
+            .form h2 {
+                font-size: 2em;
+            }
+            #taskForm {
+                width: 70%;
+            }
+            label {
+                font-size: 1.2em;
+            }
+            #taskForm input,
+            #taskForm select,
+            #taskForm textarea {
+                width: 100%;
+                padding: 0.5em;
+            }
+            #taskForm input[type="submit"] {
+                width: 100%;
+            }
+            nav ul {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin: 0;
+            }
+            nav ul li {
+                margin-left: 1em;
+            }
+        }
+        @media (min-width: 600px) and (max-width: 800px) {
+            #taskForm {
+                width: 80%;
+            }
+            header h1 {
+                font-size: 3em;
+            }
+            .form h2 {
+                font-size: 2em;
+            }
+        }
+        @media (min-width: 801px) and (max-width: 1024px) {
+            #taskForm {
+                width: 60%;
+            }
+            header h1 {
+                font-size: 3.5em;
+            }
+            .form h2 {
+                font-size: 2.2em;
+            }
+        }
+        @media (min-width: 1024px) and (max-width: 1280px) {
+            #taskForm {
+                width: 50%;
+            }
+            header h1 {
+                font-size: 3.5em;
+            }
+            .form h2 {
+                font-size: 2.2em;
+            }
+        }
+        @media (min-width: 1281px) and (max-width: 1600px) {
+            #taskForm {
+                width: 40%;
+            }
+            header h1 {
+                font-size: 4em;
+            }
+            .form h2 {
+                font-size: 2.5em;
+            }
+        }
+        @media (min-width: 1601px) {
+            #taskForm {
+                width: 30%;
+            }
+            header h1 {
+                font-size: 4.5em;
+            }
+            .form h2 {
+                font-size: 2.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="/cal.jpg" alt="">
+    <ul>
+        <li th:if="${session.user != null}"><a href="/user/calendar-page">Calendar</a></li>
+        <li th:if="${session.user != null and session.role == 'admin'}">
+            <a href="/user/all-users">Users</a>
+        </li>
+        <li th:if="${session.user != null}"><a href="/create-schedule">Create schedule</a></li>
+        <li th:if="${session.user != null}"><a href="/subscriptions">Subscription</a></li>
+        <li th:if="${session.user != null}"><a href="/tasks/task-page">My Tasks</a></li>
+        <li th:if="${session.user != null}"><a href="/schedules">My Schedules</a></li>
+        <li th:if="${session.user != null}"><a href="/user/logout">Logout</a></li>
+    </ul>
+</nav>
+<div class="form">
+    <h2>Create Task</h2>
+    <form id="taskForm" action="/tasks/create-task" method="post" onsubmit="return validateForm()">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <span id="nameError" class="error"></span><br>
+        <label for="startDate">Start Date:</label><br>
+        <input type="datetime-local" id="startDate" name="startDate" required><br>
+        <span id="startDateError" class="error"></span><br>
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description" required><br>
+        <span id="descriptionError" class="error"></span><br>
+        <label for="endDate">End Date:</label><br>
+        <input type="datetime-local" id="endDate" name="endDate" required><br>
+        <span id="endDateError" class="error"></span><br>
+        <input type="hidden" name="createdByEmail" value="${currentUserEmail}">
+        <label for="assignee">Assignee:</label><br>
+        <select id="assignee" name="assignee" required>
+            <option value="" disabled selected>Select a user</option>
+            <option th:each="user : ${allUsers}" th:value="${user.id}" th:text="${user.email}"></option>
+        </select>
+        <span id="assigneeError" class="error"></span><br>
+        <input type="submit" value="Submit">
+        <div id="errorMessages" style="color:red;"></div>
+    </form>
+</div>
+<footer>&copy; All rights reserved 2024.</footer>
+
+<script>
+    function validateForm() {
+        let name = document.getElementById("name").value.trim();
+        let startDate = document.getElementById("startDate").value.trim();
+        let description = document.getElementById("description").value.trim();
+        let endDate = document.getElementById("endDate").value.trim();
+        let assignee = document.getElementById("assignee").value;
+        let isValid = true;
+        document.getElementById("nameError").textContent = "";
+        document.getElementById("startDateError").textContent = "";
+        document.getElementById("descriptionError").textContent = "";
+        document.getElementById("endDateError").textContent = "";
+        document.getElementById("assigneeError").textContent = "";
+        if (name === "" || name.length < 3) {
+            document.getElementById("nameError").textContent = "Name is required and must be at least 3 characters long";
+            isValid = false;
+        }
+        if (startDate === "") {
+            document.getElementById("startDateError").textContent = "Start Date is required";
+            isValid = false;
+        }
+        if (description === "" || description.length < 3) {
+            document.getElementById("descriptionError").textContent = "Description is required and must be at least 3 characters long";
+            isValid = false;
+        }
+        if (endDate === "") {
+            document.getElementById("endDateError").textContent = "End Date is required";
+            isValid = false;
+        }
+        if (assignee === "") {
+            document.getElementById("assigneeError").textContent = "Assignee is required";
+            isValid = false;
+        }
+        return isValid;
+    }
+</script>
+</body>
+</html>

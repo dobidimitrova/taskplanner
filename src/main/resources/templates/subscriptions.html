@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner</title>
+    <link rel="icon" type="image/x-icon" href="/templates/title-icon.png">
+    <style>
+        *, *:after, *:before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-image: url('/beige-background-picture-image.jpg');
+            background-size: cover;
+            background-repeat: repeat;
+            background-position: center;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em;
+            background-color: #E6CCB3;
+        }
+        nav img {
+            width: 3em;
+            height: 3em;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            margin-left: 2em;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #80613F;
+            font-size: 16px;
+        }
+        header {
+            padding: 1em;
+            text-align: center;
+            color: #80613F;
+        }
+        header h1 {
+            margin-bottom: 0.5em;
+            font-size: 2.5em;
+        }
+        input, select {
+            margin-top: 0.5em;
+            margin-bottom: 0.9em;
+            padding: 0.5em;
+            width: 100%;
+            max-width: 300px;
+        }
+        table {
+            margin: auto;
+            width: 90%;
+            border: 1px solid #583E22;
+            border-radius: 0.7em;
+            background-color: #E6CCB3;
+        }
+        table, th, td {
+            border: 1px solid #583E22;
+        }
+        th, td {
+            padding: 1em;
+            text-align: left;
+        }
+        th {
+            background-color: #B89A7E;
+            color: #583E22;
+        }
+        td {
+            background-color: #E6CCB3;
+        }
+        button {
+            padding: 0.5em 1em;
+            background-color: #B89A7E;
+            border: 1px solid #583E22;
+            font-size: 15px;
+            border-radius: 0.7em;
+            margin-top: 0.5em;
+            cursor: pointer;
+        }
+        button a {
+            text-decoration: none;
+            color: #583E22;
+        }
+        footer {
+            background-color: #B89A7E;
+            color: #583E22;
+            text-align: center;
+            padding: 1em 0;
+            margin-top: auto;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1em;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+        @media (max-width: 480px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul li {
+                margin-left: 0;
+                margin-bottom: 0.5em;
+            }
+            nav img {
+                width: 2em;
+                height: 2em;
+            }
+            header h1 {
+                font-size: 1.5em;
+            }
+            table, th, td {
+                font-size: 12px;
+            }
+            input, select {
+                max-width: 100%;
+            }
+            button {
+                padding: 0.5em;
+                font-size: 14px;
+                width: 100%;
+                max-width: 150px;
+            }
+        }
+        @media (min-width: 481px) and (max-width: 767px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul li {
+                margin-left: 0;
+                margin-bottom: 0.5em;
+            }
+            header h1 {
+                font-size: 2em;
+            }
+            table {
+                width: 100%;
+                font-size: 14px;
+            }
+            input, select {
+                max-width: 100%;
+            }
+            button {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+        @media (min-width: 600px) and (max-width: 800px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul li {
+                margin-left: 0;
+                margin-bottom: 0.5em;
+            }
+            header h1 {
+                font-size: 2.2em;
+            }
+            table {
+                width: 100%;
+                font-size: 15px;
+            }
+            input, select {
+                max-width: 100%;
+            }
+            button {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+        @media (min-width: 801px) and (max-width: 1024px) {
+            nav {
+                flex-direction: row;
+                align-items: center;
+            }
+            nav ul {
+                flex-direction: row;
+                align-items: center;
+            }
+            nav ul li {
+                margin-left: 1em;
+                margin-bottom: 0;
+            }
+            header h1 {
+                font-size: 2.5em;
+            }
+            table {
+                width: 100%;
+                font-size: 16px;
+            }
+            input, select {
+                max-width: 100%;
+            }
+            button {
+                max-width: 300px;
+            }
+        }
+        @media (min-width: 1024px) and (max-width: 1280px) {
+            nav {
+                padding: 1em 2em;
+            }
+            nav ul {
+                flex-direction: row;
+                align-items: center;
+            }
+            nav ul li {
+                margin-left: 1.5em;
+            }
+            header h1 {
+                font-size: 2.7em;
+            }
+            table {
+                width: 90%;
+                font-size: 17px;
+            }
+            input, select {
+                max-width: 100%;
+            }
+            button {
+                max-width: 350px;
+            }
+        }
+        @media (min-width: 1281px) and (max-width: 1600px) {
+            nav ul li a {
+                font-size: 16px;
+            }
+            header h1 {
+                font-size: 3em;
+            }
+            table {
+                width: 80%;
+                font-size: 18px;
+            }
+            button {
+                max-width: 400px;
+            }
+        }
+        @media (min-width: 1601px) {
+            nav ul li a {
+                font-size: 14px;
+            }
+            header h1 {
+                font-size: 3.5em;
+            }
+            table {
+                width: 70%;
+                font-size: 19px;
+            }
+            button {
+                max-width: 450px;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="/cal.jpg" alt="TaskPlanner Logo">
+    <ul>
+        <li th:if="${session.user != null}"><a href="/user/calendar-page">Calendar</a></li>
+        <li th:if="${session.user != null and session.role == 'admin'}">
+            <a href="/user/all-users">Users</a>
+        </li>
+        <li th:if="${session.user != null}"><a href="/tasks/create-task">Create task</a></li>
+        <li th:if="${session.user != null}"><a href="/create-schedule">Create schedule</a></li>
+        <li th:if="${session.user != null}"><a href="/tasks/task-page">My Tasks</a></li>
+        <li th:if="${session.user != null}"><a href="/schedules">My Schedules</a></li>
+        <li th:if="${session.user != null}"><a href="/user/logout">Logout</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <header>
+        <h1>Subscriptions</h1>
+        <input type="text" id="userSearch" placeholder="Search users...">
+    </header>
+    <table>
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}" class="user-row">
+            <td th:text="${user.email}" class="user-email"></td>
+            <td>
+                <form th:if="${subscriptionStatus[user.id]}" th:action="@{/subscriptions/unsubscribe}" method="post" style="display:inline;">
+                    <input type="hidden" name="subscriberId" th:value="${loggedUser.id}">
+                    <input type="hidden" name="subscribedToId" th:value="${user.id}">
+                    <button type="submit">Unsubscribe</button>
+                </form>
+                <form th:if="${!subscriptionStatus[user.id]}" th:action="@{/subscriptions/subscribe}" method="post" style="display:inline;">
+                    <input type="hidden" name="subscriberId" th:value="${loggedUser.id}">
+                    <input type="hidden" name="subscribedToId" th:value="${user.id}">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<footer>&copy; All rights reserved 2024.</footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById('userSearch');
+        const userRows = document.querySelectorAll('.user-row');
+
+        searchInput.addEventListener('input', function() {
+            const filter = searchInput.value.toLowerCase();
+            userRows.forEach(row => {
+                const emailCell = row.querySelector('.user-email');
+                const emailText = emailCell.textContent.toLowerCase();
+                if (emailText.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

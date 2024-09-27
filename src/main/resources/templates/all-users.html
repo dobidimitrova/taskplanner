@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner</title>
+    <link rel="icon" type="image/x-icon" href="/templates/title-icon.png">
+    <style>
+        *, *:after, *:before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: url('/beige-background-picture-image.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em 2em;
+            background-color: #E6CCB3;
+            flex-wrap: wrap;
+        }
+        img {
+            width: 2em;
+            height: 2em;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            margin-left: 1em;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #80613F;
+        }
+        .user-list {
+            padding: 2em 1em;
+            text-align: center;
+        }
+        .user-list h1 {
+            font-size: 2em;
+            margin-bottom: 1em;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 2px solid #583E22;
+        }
+        th, td {
+            border: 1px solid #583E22;
+            padding: 0.5em;
+            text-align: left;
+        }
+        th {
+            background-color: #E6CCB3;
+        }
+        button {
+            margin-top: 0.5em;
+            padding: 0.5em 2em;
+            background-color: #B89A7E;
+            border: 1px solid #583E22;
+            font-size: 15px;
+            border-radius: 0.7em;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #B89A7E;
+            color: #583E22;
+            text-align: center;
+            padding: 1em 0;
+            margin-top: auto;
+            width: 100%;
+        }
+        @media (max-width: 480px) {
+            img {
+                width: 1.2em;
+                height: 1.2em;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                margin: 0.5em 0;
+                width: 100%;
+                text-align: center;
+            }
+            nav ul li a {
+                display: block;
+                padding: 0.7em;
+                font-size: 14px;
+                background-color: #E6CCB3;
+                color: #80613F;
+                border-radius: 0.3em;
+            }
+            nav ul li a:hover {
+                background-color: #B89A7E;
+                color: #fff;
+            }
+            .user-list {
+                padding: 0.5em;
+            }
+            .user-list h1 {
+                font-size: 1.2em;
+            }
+            table {
+                border: 1px solid #583E22;
+            }
+            th, td {
+                font-size: 12px;
+                padding: 0.4em;
+            }
+            button {
+                padding: 0.5em 1.5em;
+                font-size: 14px;
+            }
+        }
+        @media (min-width: 481px) and (max-width: 767px) {
+            img {
+                width: 1.5em;
+                height: 1.5em;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                margin: 0.5em 0;
+                width: 100%;
+                text-align: center;
+            }
+            nav ul li a {
+                display: block;
+                padding: 0.5em;
+                font-size: 16px;
+                background-color: #E6CCB3;
+                color: #80613F;
+                border-radius: 0.3em;
+            }
+            nav ul li a:hover {
+                background-color: #B89A7E;
+                color: #fff;
+            }
+            .user-list {
+                padding: 1em;
+            }
+            .user-list h1 {
+                font-size: 1.5em;
+            }
+            table {
+                border: 1px solid #583E22;
+            }
+            th, td {
+                font-size: 14px;
+                padding: 0.5em;
+            }
+            button {
+                padding: 0.5em 1.5em;
+                font-size: 15px;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+            nav {
+                flex-direction: row;
+                align-items: center;
+                padding: 1em 2em;
+            }
+            nav ul {
+                flex-direction: row;
+                display: flex;
+                width: auto;
+            }
+            nav ul li {
+                margin-left: 1em;
+            }
+            nav ul li a {
+                display: inline-block;
+                padding: 0.5em;
+                font-size: 16px;
+                background-color: transparent;
+                color: #80613F;
+                border-radius: 0;
+            }
+            nav ul li a:hover {
+                background-color: transparent;
+                color: #B89A7E;
+            }
+            .user-list {
+                padding: 2em 1em;
+            }
+            .user-list h1 {
+                font-size: 2em;
+            }
+            table {
+                border: 2px solid #583E22;
+            }
+            th, td {
+                font-size: 15px;
+                padding: 0.5em;
+            }
+            button {
+                padding: 0.5em 2em;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="/cal.jpg" alt="">
+    <ul id="nav-links">
+        <li><a href="/user/calendar-page">Calendar</a></li>
+        <li><a href="/tasks/create-task">Create task</a></li>
+        <li><a href="/create-schedule">Create schedule</a></li>
+        <li><a href="/subscriptions">Subscription</a></li>
+        <li><a href="/tasks/task-page">My Tasks</a></li>
+        <li><a href="/schedules">My Schedules</a></li>
+        <li><a href="/user/logout">Logout</a></li>
+    </ul>
+</nav>
+<div class="user-list">
+    <h1>All users</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td><a th:href="@{/user/{id}/details(id=${user.id})}" th:text="${user.username}"></a></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.phoneNumber}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<footer>&copy; All rights reserved 2024.</footer>
+</body>
+</html>

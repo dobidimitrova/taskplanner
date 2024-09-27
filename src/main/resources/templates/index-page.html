@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner</title>
+    <link rel="icon" type="image/x-icon" href="/templates/title-icon.png">
+    <style>
+        *,*:after,*:before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background-image: url('/beige-background-picture-image.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em;
+            background-color: #E6CCB3;
+        }
+
+        img {
+            width: 3em;
+            height: 3em;
+            margin-left: 1em;
+        }
+
+        header {
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #80613F;
+        }
+
+        header h1 {
+            margin-bottom: 0.3em;
+            font-size: 60px;
+        }
+
+        header p {
+            font-size: 20px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            justify-content: flex-end;
+        }
+
+        nav ul li {
+            margin-right: 1em;
+            position: relative;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #80613F;
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #B89A7E;
+            color: #583E22;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 36px;
+            }
+
+            header p {
+                font-size: 16px;
+            }
+
+            nav ul li {
+                margin-right: 0.5em;
+            }
+
+            img {
+                width: 2.5em;
+                height: 2.5em;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 767px) {
+            header h1 {
+                font-size: 48px;
+            }
+
+            header p {
+                font-size: 18px;
+            }
+
+            img {
+                width: 2.8em;
+                height: 2.8em;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            header h1 {
+                font-size: 60px;
+            }
+
+            img {
+                width: 3em;
+                height: 3em;
+            }
+
+            nav ul li {
+                margin-right: 1.5em;
+            }
+        }
+
+        @media (min-width: 600px) and (max-width: 800px) {
+            header h1 {
+                font-size: 64px;
+            }
+
+            header p {
+                font-size: 18px;
+            }
+
+            nav ul li {
+                margin-right: 1.5em;
+            }
+        }
+
+        @media (min-width: 801px) and (max-width: 1024px) {
+            header h1 {
+                font-size: 72px;
+            }
+
+            img {
+                width: 3.2em;
+                height: 3.2em;
+            }
+        }
+
+        @media (min-width: 1024px) and (max-width: 1280px) {
+            header h1 {
+                font-size: 80px;
+            }
+
+            header p {
+                font-size: 20px;
+            }
+
+            img {
+                width: 3.5em;
+                height: 3.5em;
+            }
+
+            nav ul li {
+                margin-right: 2em;
+            }
+        }
+
+        @media (min-width: 1281px) and (max-width: 1600px) {
+            header h1 {
+                font-size: 80px;
+            }
+        }
+
+        @media (min-width: 1601px) {
+            header h1 {
+                font-size: 96px;
+            }
+
+            header p {
+                font-size: 24px;
+            }
+
+            img {
+                width: 4em;
+                height: 4em;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="/cal.jpg" alt="">
+    <ul>
+        <li><a href="/user/login">Login</a></li>
+        <li><a href="/user/register">Register</a></li>
+    </ul>
+</nav>
+<header>
+    <h1>Task Planner</h1>
+    <p>Flexible, Efficient, Simple: Your journey to success</p>
+</header>
+<footer>&copy; All rights reserved 2024.</footer>
+</body>
+</html>

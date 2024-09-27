@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskPlanner</title>
+    <link rel="icon" type="image/x-icon" href="/templates/title-icon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: url('/beige-background-picture-image.jpg');
+            background-size: cover;
+            background-repeat: repeat;
+            background-position: center;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em 2em;
+            background-color: #E6CCB3;
+        }
+        nav img {
+            width: 2em;
+            height: 2em;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            margin-right: 1em;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #80613F;
+            font-size: 16px;
+        }
+        header {
+            text-align: center;
+            padding-top: 2em;
+            color: #80613F;
+        }
+        header h2 {
+            font-size: 2.5em;
+            margin-bottom: 1em;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px;
+            margin-top: 2em;
+        }
+        .task {
+            width: 100%;
+            max-width: 300px;
+            padding: 1em;
+            background-color: #B89A7E;
+            border: 1px solid #80613F;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        .task.blur::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            filter: blur(5px);
+            z-index: 5;
+        }
+        .task.blur .task-content {
+            position: relative;
+            z-index: 6;
+        }
+        .task.blur .access-code-form {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 7;
+        }
+        .task-info {
+            flex: 1;
+        }
+        .task-info p {
+            margin-bottom: 0.5em;
+            color: #80613F;
+        }
+        .task-buttons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .task-buttons button {
+            padding: 0.5em 1em;
+            background-color: #FFD1DC;
+            border: none;
+            color: #80613F;
+            font-size: 14px;
+            margin-left: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .access-code-form {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #80613F;
+            border-radius: 10px;
+            padding: 1em;
+            margin-top: 10px;
+            position: relative;
+            z-index: 10;
+        }
+        footer {
+            background-color: #B89A7E;
+            color: #583E22;
+            text-align: center;
+            padding: 1em 0;
+            margin-top: auto;
+        }
+        @media (max-width: 480px) {
+            nav {
+                flex-direction: column;
+                padding: 1em;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                padding: 0;
+                margin: 0;
+            }
+            nav ul li {
+                margin-bottom: 0.5em;
+                margin-right: 0;
+            }
+            header h2 {
+                font-size: 1.5em;
+            }
+            .task {
+                width: 100%;
+                max-width: none;
+            }
+            .task-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .task-buttons button {
+                margin-left: 0;
+                margin-bottom: 0.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="/cal.jpg" alt="">
+    <ul>
+        <li th:if="${session.user != null}"><a href="/user/calendar-page">Calendar</a></li>
+        <li th:if="${session.user != null}"><a href="/tasks/create-task">Create task</a></li>
+        <li th:if="${session.user != null}"><a href="/create-schedule">Create schedule</a></li>
+        <li th:if="${session.user != null and session.role == 'admin'}">
+            <a href="/user/all-users">Users</a>
+        </li>
+        <li th:if="${session.user != null}"><a href="/subscriptions">Subscription</a></li>
+        <li th:if="${session.user != null}"><a href="/tasks/task-page">My Tasks</a></li>
+        <li th:if="${session.user != null}"><a href="/schedules">My Schedules</a></li>
+        <li th:if="${session.user != null}"><a href="/user/logout">Logout</a></li>
+    </ul>
+</nav>
+<header>
+    <h2>All Tasks</h2>
+</header>
+<div class="container">
+    <div class="task"
+         th:each="task : ${tasks}"
+         th:id="${task.id}"
+         th:classappend="${task.getIsNew()} ? 'blur'">
+        <div class="task-content">
+            <div class="task-info">
+                <p><strong>Title:</strong> <span th:text="${task.name}"></span></p>
+                <p><strong>Start Date:</strong> <span th:text="${task.startDate}"></span></p>
+                <p><strong>Description:</strong> <span th:text="${task.description}"></span></p>
+                <p><strong>End Date:</strong> <span th:text="${task.endDate}"></span></p>
+                <p><strong>Send from:</strong> <span th:text="${task.getCreatedBy().username}"></span></p>
+            </div>
+            <div class="task-buttons">
+                <form th:action="@{/tasks/complete-task}" method="post">
+                    <input type="hidden" name="taskId" th:value="${task.id}">
+                    <button type="submit" th:disabled="${task.status == 'Completed'}">Complete</button>
+                </form>
+                <form th:action="@{/tasks/delete-task}" method="post" style="display: inline;">
+                    <input type="hidden" name="taskId" th:value="${task.id}">
+                    <button type="submit" th:disabled="${task.status == 'Deleted'}">Delete</button>
+                </form>
+            </div>
+            <div class="access-code-form" th:if="${task.isNew}">
+                <form method="post" class="access-form" th:action="@{/tasks/access}">
+                    <input type="hidden" name="taskId" th:value="${task.id}">
+                    <label for="code">Access Code:</label>
+                    <input type="text" id="code" name="code" required>
+                    <button type="submit">Submit</button>
+                </form>
+                <p class="error-message" th:if="${errorMessage}" style="color:red;">
+                    <span th:text="${errorMessage}"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>&copy; All rights reserved 2024.</footer>
+</body>
+</html>
